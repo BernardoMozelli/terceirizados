@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Importar Funcionários - PMSL Terceiros</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link id="themeStylesheet" href="css/theme.css" rel="stylesheet" />
+  <link href="css/config.css" rel="stylesheet" />
+  <style>
+    .navbar-user-info {
+      line-height: 1.2;
+    }
+  </style>
+  <link href="css/internal-pages.css" rel="stylesheet" />
+    <link href="css/pmsl-moderno.css" rel="stylesheet" />
+  </head>
+
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="container my-5">
+    <h2><i class="fas fa-file-import me-2 icon-blue"></i> Importar Funcionários via CSV</h2>
+    <p class="text-muted mb-0">Importar funcionários em lote utilizando arquivo csv.</p>
+    <br>
+    <div class="alert alert-info">
+      <strong>Orientações:</strong>
+      <ul>
+        <li>O arquivo CSV deve conter colunas: <b>nome, matricula, cargo, cpf, empresa_id, secretaria, setor,
+            status_contratual, observacao</b></li>
+        <li>No mínimo, os campos <b>nome, matricula, cargo, cpf, empresa_id, secretaria</b> são obrigatórios</li>
+        <li><b>Atenção com o CPF:</b> Para evitar a perda de zeros à esquerda (ex: 012.345.678-90), formate a coluna
+          'cpf' como "Texto" no seu editor de planilhas (Excel, Google Sheets, etc.) antes de salvar como CSV.
+        </li>
+        <li>Baixe o <a href="modelo_funcionarios.csv" download>arquivo modelo</a> para facilitar a importação.</li>
+      </ul>
+    </div>
+    <form id="importForm" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="arquivoCsv" class="form-label">Selecione o arquivo CSV para importação</label>
+        <input type="file" class="form-control" id="arquivoCsv" accept=".csv" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Importar Funcionários</button>
+    </form>
+    <div id="feedback" class="mt-4"></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    const token = localStorage.getItem('access_token');
+    if (!token) window.location.href = 'index.html';
+
+    // Envio do CSV
+    document.getElementById('importForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const arquivo = document.getElementById('arquivoCsv').files[0];
+      const feedback = document.getElementById('feedback');
+      if (!arquivo) return;
+      const formData = new FormData();
+      formData.append('arquivo', arquivo);
+      const res = await fetch('/importar_funcionarios', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token },
+        body: formData
+      });
+      if (res.ok) {
+        feedback.innerHTML = '<div class="alert alert-success">Importação concluída com sucesso!</div>';
+      } else {
+        const msg = await res.text();
+        feedback.innerHTML = `<div class="alert alert-danger">Erro: ${msg}</div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>

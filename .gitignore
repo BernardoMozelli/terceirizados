@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# Segredos — NUNCA versionar
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env_old
+
+# ---------------------------------------------------------------------------
+# Dados pessoais e de produção — NUNCA versionar
+# ---------------------------------------------------------------------------
+# Fotos e uploads de funcionários/candidatos
+backend/static/uploads/*
+!backend/static/uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/candidatos/
+backend/uploads/candidatos/*
+!backend/uploads/candidatos/.gitkeep
+# Planilhas, fotos e relatórios das importações em lote
+backend/importacao/
+backend/importacao_*/
+importacao/
+# Backups e dumps de banco
+*.sql
+*.sql.gz
+*.dump
+*.backup
+*.tar.gz
+*.tgz
+backup/
+backups/
+backup_*/
+backupBD/
+# Planilhas e documentos soltos (podem conter dados pessoais)
+*.xlsx
+*.xls
+*.docx
+*.pdf
+
+# ---------------------------------------------------------------------------
+# Ambiente e ferramentas
+# ---------------------------------------------------------------------------
+backend/venv/
+venv/
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+.vscode/
+.idea/
+.DS_Store
+*.log

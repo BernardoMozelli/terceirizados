@@ -1,0 +1,107 @@
+<!-- Modal Navegável de Visualização de Transferência -->
+<div class="modal fade" id="modalVisualizarTransferencia" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header border-0 bg-light">
+                <div class="d-flex align-items-center w-100">
+                    <h5 class="modal-title m-0 flex-grow-1">
+                        <i class="fas fa-right-left me-2 text-primary"></i>Detalhes da Transferência
+                    </h5>
+                    <span class="badge bg-primary me-3" id="indicadorTransferencia">1 de 1</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted text-uppercase mb-3">Informações do Funcionário</h6>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Nome</label>
+                            <p class="mb-0"><strong id="transferenciaFuncionario">-</strong></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Matrícula</label>
+                            <p class="mb-0"><strong id="transferenciaMatricula">-</strong></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted text-uppercase mb-3">Status</h6>
+                        <div class="mb-3">
+                            <span class="badge px-3 py-2" id="statusBadgeTransferencia">PENDENTE</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Solicitante</label>
+                            <p class="mb-0"><strong id="transferenciaSolicitante">-</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted text-uppercase mb-3">De</h6>
+                        <div class="p-3 rounded border bg-light">
+                            <i class="fas fa-arrow-right text-primary me-2"></i>
+                            <strong id="transferenciaSecretariaOrigem">-</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted text-uppercase mb-3">Para</h6>
+                        <div class="p-3 rounded border bg-light">
+                            <i class="fas fa-arrow-right text-success me-2"></i>
+                            <strong id="transferenciaSecretariaDestino">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted text-uppercase mb-3">Data da Solicitação</h6>
+                        <p class="mb-0"><strong id="transferenciaDataSolicitacao">-</strong></p>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Justificativa</h6>
+                <div class="p-3 rounded border bg-light mb-4">
+                    <p class="mb-0 text-muted" id="transferenciaJustificativa">Não informada</p>
+                </div>
+
+                <!-- Campo de Motivo para Rejeição -->
+                <div id="motivoRejeitarContainer" style="display: none;">
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">Motivo da Rejeição</h6>
+                    <textarea id="motivoRejeicaoTransferenciaInput" class="form-control" rows="3" placeholder="Descreva o motivo da rejeição..."></textarea>
+                </div>
+            </div>
+
+            <!-- Footer com Navegação e Ações -->
+            <div class="modal-footer border-0 bg-light">
+                <div class="d-flex gap-2 w-100">
+                    <!-- Botões de Navegação -->
+                    <button type="button" class="btn btn-outline-secondary" id="btnAnteriorTransferencia" title="Transferência Anterior">
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnProximoTransferencia" title="Próxima Transferência">
+                        Próximo <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <div class="flex-grow-1"></div>
+
+                    <!-- Botões de Ação -->
+                    <button type="button" class="btn btn-success px-4" id="btnAprovarTransferencia" style="display:none;">
+                        <i class="fas fa-check me-2"></i>Aprovar
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="btnRejeitarTransferencia" style="display:none;">
+                        <i class="fas fa-times me-2"></i>Rejeitar
+                    </button>
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

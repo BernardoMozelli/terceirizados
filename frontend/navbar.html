@@ -1,0 +1,102 @@
+<!-- Barra superior no padrão SIAG: marca à esquerda, menus agrupados e usuário à direita.
+     Os IDs usados pelo layout.js (notification-badge, userPhoto, userInfoNome, userInfoSecretaria,
+     temaSelect, logoutBtn) e os atributos data-permission foram mantidos. -->
+<nav class="navbar navbar-expand-lg navbar-dark pmsl-nav">
+  <div class="container-fluid pmsl-nav-in">
+    <a class="navbar-brand pmsl-brand" href="inicio.html">
+      <img class="pmsl-brand-logo" src="assets/logo-prefeitura-emb.png" alt="Brasão de Santa Luzia" />
+      <span class="pmsl-brand-txt">
+        <b>PMSL Terceiros</b>
+        <small>Prefeitura de Santa Luzia</small>
+      </span>
+    </a>
+
+    <button class="navbar-toggler pmsl-ham" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Abrir menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav pmsl-links me-auto">
+        <li class="nav-item">
+          <a class="nav-link pmsl-btn" href="inicio.html">Início</a>
+        </li>
+
+        <li class="nav-item dropdown pmsl-grupo">
+          <a class="nav-link dropdown-toggle pmsl-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Funcionários</a>
+          <ul class="dropdown-menu pmsl-sub">
+            <li><a class="dropdown-item" href="funcionarios.html" data-permission="acessar_funcionarios"><i class="fas fa-users"></i>Ativos</a></li>
+            <li><a class="dropdown-item" href="funcionarios_inativos.html" data-permission="acessar_desligados"><i class="fas fa-user-slash"></i>Desligados</a></li>
+            <li><a class="dropdown-item" href="transferencias.html" data-permission="acessar_transferencias"><i class="fas fa-exchange-alt"></i>Transferências</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown pmsl-grupo">
+          <a class="nav-link dropdown-toggle pmsl-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contratações</a>
+          <ul class="dropdown-menu pmsl-sub">
+            <li><a class="dropdown-item" href="contratacoes.html" data-permission="acessar_contratacoes"><i class="fas fa-briefcase"></i>Nova solicitação</a></li>
+            <li><a class="dropdown-item" href="aprovacoes.html" data-permission="acessar_aprovacoes"><i class="fas fa-check-circle"></i>Aprovações</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown pmsl-grupo">
+          <a class="nav-link dropdown-toggle pmsl-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cadastros</a>
+          <ul class="dropdown-menu pmsl-sub">
+            <li><a class="dropdown-item" href="secretarias.html" data-permission="acessar_secretarias"><i class="fas fa-sitemap"></i>Secretarias</a></li>
+            <li><a class="dropdown-item" href="empresas.html" data-permission="acessar_empresas"><i class="fas fa-building"></i>Empresas</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown pmsl-grupo">
+          <a class="nav-link dropdown-toggle pmsl-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Gestão</a>
+          <ul class="dropdown-menu pmsl-sub">
+            <li><a class="dropdown-item" href="dashboard.html" data-permission="acessar_dashboard"><i class="fas fa-chart-line"></i>Dashboard</a></li>
+            <li><a class="dropdown-item" href="relatorios.html" data-permission="acessar_relatorios"><i class="fas fa-chart-bar"></i>Relatórios</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown pmsl-grupo">
+          <a class="nav-link dropdown-toggle pmsl-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administração</a>
+          <ul class="dropdown-menu pmsl-sub">
+            <li><a class="dropdown-item" href="usuarios.html" data-permission="acessar_usuarios"><i class="fas fa-user-tie"></i>Usuários</a></li>
+            <li><a class="dropdown-item" href="importar_funcionarios.html" data-permission="acessar_importacao"><i class="fas fa-file-import"></i>Importação</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav pmsl-direita">
+        <li class="nav-item" data-permission="acessar_transferencias">
+          <a href="transferencias.html" class="pmsl-sino" title="Transferências pendentes">
+            <i class="fas fa-bell"></i>
+            <span id="notification-badge" class="badge bg-danger">0</span>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <button class="pmsl-btn pmsl-usuario" type="button" id="menuHamburguer" data-bs-toggle="dropdown" aria-expanded="false">
+            <span id="userPhoto" class="user-photo-circle"><i class="fas fa-user"></i></span>
+            <span class="user-info-container">
+              <span id="userInfoNome" class="user-name"></span>
+              <span id="userInfoSecretaria" class="user-dept"></span>
+            </span>
+            <i class="fas fa-chevron-down pmsl-seta"></i>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end pmsl-sub" aria-labelledby="menuHamburguer">
+            <li class="px-3 pt-2 pb-1"><span class="pmsl-sub-rotulo">Aparência</span></li>
+            <li>
+              <div class="px-3 pb-2">
+                <select id="temaSelect" class="form-select form-select-sm" aria-label="Escolher tema">
+                  <option value="claro">☀️ Claro</option>
+                  <option value="escuro">🌙 Escuro</option>
+                </select>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAlterarMinhaSenha"><i class="fas fa-key"></i>Alterar minha senha</a></li>
+            <li><a class="dropdown-item logout-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

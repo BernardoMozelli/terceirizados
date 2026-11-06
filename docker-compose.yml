@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: pmsl_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - ./backend/.env
+    networks:
+      - pmsl_network
+    restart: unless-stopped
+
+  backend:
+    container_name: pmsl_backend
+    build: ./backend
+    volumes:
+      - ./backend:/app
+      - ./backend/static/uploads:/app/static/uploads # Garante que os uploads fiquem no host
+    command: gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 --access-logfile - --error-logfile - --log-level debug wsgi:app
+    expose:
+      - 5000
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    networks:
+      - pmsl_network
+    restart: unless-stopped
+
+  nginx:
+    container_name: pmsl_nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:z
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./backend/static/uploads:/usr/share/nginx/html/static/uploads:z
+    depends_on:
+      - backend
+    networks:
+      - pmsl_network
+    restart: unless-stopped
+
+networks:
+  pmsl_network:
+    driver: bridge
+
+volumes:
+  pgdata:

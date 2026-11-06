@@ -1,0 +1,28 @@
+body {
+  background-color: #f0f4f8;
+  color: #333333;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.card {
+  background-color: #ffffff;
+  color: #333333;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar,
+.btn-primary {
+  background-color: #ff5722 !important;
+  transition: background-color 0.3s;
+}
+
+.user-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}

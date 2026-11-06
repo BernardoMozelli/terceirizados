@@ -1,0 +1,108 @@
+<!-- 
+  MODAL PARA DETALHES DESCRITIVOS DO LOG
+  Adicione este código no arquivo usuarios.html, dentro da seção de modais
+  (após os outros modais de usuários, antes de </body>)
+-->
+
+<div
+  class="modal fade"
+  id="modalDetalhesLog"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow border-primary">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-info-circle me-2"></i>Detalhes da Alteração
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Fechar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <!-- Informações da Alteração -->
+          <div class="col-12">
+            <h6 class="text-muted fw-bold mb-3">
+              <i class="fas fa-edit me-2 text-primary"></i>CAMPO ALTERADO
+            </h6>
+            <div class="alert alert-light border-start border-primary border-3 mb-0">
+              <p class="mb-1">
+                <strong>Funcionário:</strong>
+                <span id="detalhesLogFuncionario" class="text-primary fw-bold">-</span>
+              </p>
+              <p class="mb-0">
+                <strong>Campo:</strong>
+                <span id="detalhesLogCampo" class="text-primary fw-bold">-</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Valores Anterior e Novo -->
+          <div class="col-12">
+            <h6 class="text-muted fw-bold mb-3">
+              <i class="fas fa-exchange-alt me-2 text-success"></i>VALORES
+            </h6>
+            <div class="row g-2">
+              <div class="col-md-6">
+                <div class="alert alert-light border-start border-danger border-3 mb-0">
+                  <p class="small text-muted mb-1">Valor Anterior:</p>
+                  <p class="mb-0">
+                    <code id="detalhesLogValorAnterior" class="text-danger fw-bold">-</code>
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="alert alert-light border-start border-success border-3 mb-0">
+                  <p class="small text-muted mb-1">Valor Novo:</p>
+                  <p class="mb-0">
+                    <code id="detalhesLogValorNovo" class="text-success fw-bold">-</code>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informações de Auditoria -->
+          <div class="col-12">
+            <h6 class="text-muted fw-bold mb-3">
+              <i class="fas fa-shield-alt me-2 text-warning"></i>AUDITORIA
+            </h6>
+            <div class="alert alert-light border-start border-warning border-3 mb-0">
+              <p class="mb-2">
+                <strong>Usuário:</strong>
+                <span id="detalhesLogUsuario" class="text-dark">-</span>
+              </p>
+              <p class="mb-2">
+                <strong>Ação:</strong>
+                <span class="badge bg-warning text-dark" id="detalhesLogAcao">-</span>
+              </p>
+              <p class="mb-2">
+                <strong>Data/Hora:</strong>
+                <i class="far fa-clock me-1"></i>
+                <span id="detalhesLogDataHora" class="text-dark">-</span>
+              </p>
+              <p class="mb-0">
+                <strong>IP de Origem:</strong>
+                <code id="detalhesLogIP" class="text-dark">---</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          FECHAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

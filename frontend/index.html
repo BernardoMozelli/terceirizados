@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - PMSL Terceiros</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  
+  <!-- Temas e Estilos do Projeto -->
+  <link href="css/theme.css" rel="stylesheet" />
+  <link href="css/login-moderno.css" rel="stylesheet" />
+  
+  <!-- SweetAlert2 para Notificações -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+</head>
+
+<body class="lg-body">
+  <!-- Botão de Alternância de Tema -->
+  <button class="theme-toggle lg-tema" id="themeToggle" title="Alternar tema">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="lg-tela">
+    <!-- Lado institucional (cores da Prefeitura, como no SISA) -->
+    <section class="lg-marca">
+      <img src="assets/logo-prefeitura-emb.png" alt="Brasão de Santa Luzia" class="lg-brasao" />
+      <div class="lg-pref">Prefeitura Municipal de</div>
+      <div class="lg-cidade">Santa Luzia</div>
+      <div class="lg-sistema">PMSL Terceiros — Gestão de Terceirizados</div>
+    </section>
+
+    <!-- Formulário -->
+    <section class="lg-painel">
+      <div class="lg-form">
+        <img src="assets/logo-prefeitura-emb.png" alt="" class="lg-brasao-mobile" />
+        <h1>Bem-vindo</h1>
+        <p class="lg-sub">Faça login para acessar o PMSL Terceiros</p>
+
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="lg-label">E-mail</label>
+            <input type="email" id="email" class="lg-input" placeholder="email@santaluzia.mg.gov.br" required autocomplete="username" />
+          </div>
+
+          <div class="mb-4">
+            <label for="senha" class="lg-label">Senha</label>
+            <div class="lg-senha">
+              <input type="password" id="senha" class="lg-input" placeholder="••••••" required autocomplete="current-password" />
+              <button type="button" class="lg-olho" id="togglePassword" title="Mostrar/Ocultar senha">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="lg-entrar"><i class="fas fa-right-to-bracket"></i> Entrar</button>
+        </form>
+
+        <div class="alert-box" id="alert" role="alert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="alertText"></span>
+        </div>
+
+        <div class="lg-versao">Sistema de Gestão de Terceirizados</div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="lg-rodape">
+    <img src="assets/logo-prefeitura-emb.png" alt="" />
+    Secretaria de Planejamento, Ciência, Tecnologia e Inovação
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/login.js"></script>
+</body>
+
+</html>

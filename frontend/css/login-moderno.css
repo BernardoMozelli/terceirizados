@@ -1,0 +1,92 @@
+/* ============================================================================
+   PMSL TERCEIROS — LOGIN no padrão do SISA de produção (cores da Prefeitura)
+   Desenvolvido por BeMo Sistemas — Bernardo Mozelli de Medeiros
+   ============================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+body.lg-body {
+  margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  background: linear-gradient(135deg, #224190 0%, #264CA5 100%) !important;
+  color: #1E293B;
+}
+.lg-tela { flex: 1; display: flex; min-height: 0; }
+
+/* Lado azul */
+.lg-marca {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 24px; text-align: center; color: #fff;
+}
+.lg-brasao { width: 120px; height: auto; margin-bottom: 28px; filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .25)); }
+.lg-pref { font-size: 12px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; opacity: .9; }
+.lg-cidade { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 44px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; line-height: 1.1; margin: 6px 0 8px; }
+.lg-sistema { font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #EAA100; }
+
+/* Painel branco */
+.lg-painel {
+  width: 480px; max-width: 100%; background: #fff;
+  border-top-left-radius: 32px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 56px; box-shadow: -20px 0 60px rgba(0, 0, 0, .15);
+}
+.lg-form { width: 100%; max-width: 360px; }
+.lg-form h1 { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: #0F172A; margin: 0; }
+.lg-sub { color: #64738A; font-size: 14px; margin: 6px 0 30px; }
+.lg-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #64738A; margin-bottom: 7px; }
+.lg-input {
+  width: 100%; height: 50px; border: 2px solid #E2E8F0; border-radius: 12px; background: #fff;
+  padding: 0 16px; font-size: 15px; color: #0F172A; outline: none; font-family: inherit;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.lg-input:focus { border-color: #213F8E; background: #E7EFFE; box-shadow: 0 0 0 4px rgba(33, 63, 142, .1); }
+.lg-input::placeholder { color: #A0AEC0; }
+.lg-senha { position: relative; }
+.lg-senha .lg-input { padding-right: 48px; }
+.lg-olho {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: #94A3B8; padding: 8px; cursor: pointer; border-radius: 8px;
+}
+.lg-olho:hover { color: #213F8E; }
+.lg-entrar {
+  width: 100%; height: 52px; border: none; border-radius: 12px; cursor: pointer;
+  background: linear-gradient(90deg, #EA6C12 0%, #FD8707 100%); color: #fff;
+  font-size: 15px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 22px rgba(231, 104, 18, .35);
+  transition: transform .15s, box-shadow .15s;
+}
+.lg-entrar:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(231, 104, 18, .45); }
+.lg-entrar:active { transform: translateY(1px) scale(.99); }
+.lg-versao { margin-top: 22px; text-align: center; color: #E76812; font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.lg-body .alert-box { border-radius: 12px; color: #B91C1C; background: #FEF2F2; border-color: #FECACA; font-size: 13.5px; }
+.lg-brasao-mobile { display: none; }
+
+/* Rodapé */
+.lg-rodape {
+  background: #213F8E; border-top: 3px solid #E76812; color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 11px 16px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; text-align: center;
+}
+.lg-rodape img { height: 20px; width: auto; }
+
+/* Botão de tema */
+.lg-tema { z-index: 10; color: #fff !important; background: rgba(255, 255, 255, .12) !important; border-color: rgba(255, 255, 255, .3) !important; }
+body.lg-body .lg-tema { left: 1.5rem; right: auto; }
+
+/* Modo escuro */
+body.lg-body.dark-theme .lg-painel { background: #111C30; }
+body.lg-body.dark-theme .lg-form h1 { color: #F1F5F9; }
+body.lg-body.dark-theme .lg-input { background: #0D1729; border-color: #22314B; color: #E2E8F0; }
+body.lg-body.dark-theme .lg-input:focus { background: #13213B; border-color: #7FA6F5; }
+
+/* Celular / telas estreitas */
+@media (max-width: 860px) {
+  .lg-tela { flex-direction: column; }
+  .lg-marca { padding: 36px 20px 28px; flex: none; }
+  .lg-brasao { width: 80px; margin-bottom: 16px; }
+  .lg-cidade { font-size: 32px; }
+  .lg-sistema { font-size: 11px; letter-spacing: 1.5px; }
+  .lg-painel { width: 100%; flex: 1; border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 32px 22px; align-items: flex-start; }
+  .lg-form { margin: 0 auto; }
+  body.lg-body .lg-tema { left: auto; right: 1rem; top: 1rem; }
+}

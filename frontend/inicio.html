@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Início - PMSL Terceiros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link href="css/internal-pages.css" rel="stylesheet" />
+    <link href="css/pmsl-moderno.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container pmsl-inicio">
+      <div class="pmsl-inicio-topo">
+        <h1 id="inicioSaudacao">Olá!</h1>
+        <p class="pmsl-inicio-sub">PMSL Terceiros — Sistema de Gestão de Terceirizados da Prefeitura de Santa Luzia</p>
+      </div>
+
+      <section id="secaoFavoritos" class="pmsl-secao">
+        <div class="pmsl-secao-titulo">
+          <span><i class="fas fa-thumbtack"></i> Favoritos</span>
+          <small id="dicaOrdem" class="d-none">Arraste os cartões para mudar a ordem</small>
+        </div>
+        <div id="gradeFavoritos" class="pmsl-grade"></div>
+        <div id="favoritosVazio" class="pmsl-vazio d-none">
+          <i class="fas fa-thumbtack"></i>
+          <div>
+            <b>Nenhuma tela fixada ainda.</b>
+            Clique no alfinete de um cartão abaixo, no menu ao lado de cada tela, ou em <b>"Fixar no Início"</b> dentro da tela, e ela aparece aqui.
+          </div>
+        </div>
+      </section>
+
+      <div id="secoesModulos"></div>
+
+      <div id="inicioCarregando" class="text-center text-muted py-5">
+        <div class="spinner-border spinner-border-sm me-2"></div> Carregando módulos...
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/token-manager.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/inicio.js"></script>
+  </body>
+</html>

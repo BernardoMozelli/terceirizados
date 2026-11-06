@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administração - PMSL Terceiros</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link id="themeStylesheet" href="css/theme.css" rel="stylesheet" />
+    <link href="themes/tema-escuro.css" rel="stylesheet" />
+    <link href="css/config.css" rel="stylesheet" />
+    <link href="css/internal-pages.css" rel="stylesheet" />
+      <link href="css/pmsl-moderno.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container my-4">
+      <h2><i class="fas fa-user-tie me-2 icon-blue"></i> Gestão de Usuários</h2>
+      <p class="text-muted mb-0">
+        Centraliza a gestão de acessos e níveis de permissão, garantindo a
+        segurança e o controlo rigoroso das identidades e perfis no sistema.
+      </p>
+      <br />
+      <ul class="nav nav-pills mb-4 gap-2" id="adminTabs" role="tablist">
+        <li
+          class="nav-item"
+          role="presentation"
+          data-permission="acessar_usuarios"
+        >
+          <button
+            class="nav-link active border border-primary fw-bold px-4"
+            id="usuarios-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#usuarios-panel"
+            type="button"
+            role="tab"
+          >
+            <i class="fas fa-users me-2"></i>Gestão de Usuários
+          </button>
+        </li>
+        <li
+          class="nav-item"
+          role="presentation"
+          data-permission="acessar_logs_atividades"
+        >
+          <button
+            class="nav-link border border-primary fw-bold px-4"
+            id="logs-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#logs-panel"
+            type="button"
+            role="tab"
+          >
+            <i class="fas fa-history me-2"></i>Logs de Atividades
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="adminTabsContent">
+        <div
+          class="tab-pane fade show active"
+          id="usuarios-panel"
+          role="tabpanel"
+        >
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#modalCriarUsuario"
+              data-permission="criar_usuario"
+            >
+              <i class="fas fa-plus me-2"></i>CRIAR NOVO USUÁRIO
+            </button>
+          </div>
+
+          <div class="card mb-3 shadow-sm border-0">
+            <div class="card-body bg-light">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-10">
+                  <label
+                    for="filtroGeralUsuarios"
+                    class="form-label fw-bold small text-muted"
+                    >PESQUISAR USUÁRIOS</label
+                  >
+                  <input
+                    type="text"
+                    id="filtroGeralUsuarios"
+                    class="form-control"
+                    placeholder="Buscar por nome, e-mail ou matrícula..."
+                  />
+                </div>
+
+                <div class="col-md-2">
+                  <div class="d-flex gap-2">
+                    <button
+                      type="button"
+                      id="btnFiltrarUsuarios"
+                      class="btn btn-primary flex-fill"
+                      onclick="
+                        carregarUsuarios(1);
+                        return false;
+                      "
+                    >
+                      <i class="fas fa-search me-1"></i> FILTRAR
+                    </button>
+                    <button
+                      type="button"
+                      id="btnLimparFiltroUsuarios"
+                      class="btn btn-outline-secondary"
+                      title="Limpar filtro"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle mb-0" id="usersTable">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Matrícula</th>
+                  <th>E-mail</th>
+                  <th>Secretaria</th>
+                  <th>Perfil</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <nav
+            aria-label="Navegação de página"
+            id="paginationContainer"
+            class="mt-3"
+          ></nav>
+        </div>
+
+        <div class="tab-pane fade" id="logs-panel" role="tabpanel">
+          <p class="text-muted">
+            Visualize todas as ações importantes registradas no sistema.
+          </p>
+
+          <div class="card bg-light mb-3 shadow-sm border-0">
+            <div class="card-body">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-5">
+                  <label
+                    for="filtroAcao"
+                    class="form-label fw-bold small text-muted"
+                    >FILTRAR POR AÇÃO</label
+                  >
+                  <select id="filtroAcao" class="form-select">
+                    <option value="">Todas as Ações</option>
+                  </select>
+                </div>
+                <div class="col-md-5">
+                  <label
+                    for="filtroDetalhes"
+                    class="form-label fw-bold small text-muted"
+                    >BUSCAR NOS DETALHES</label
+                  >
+                  <input
+                    type="text"
+                    id="filtroDetalhes"
+                    class="form-control"
+                    placeholder="Ex: nome do funcionário, IP..."
+                  />
+                </div>
+                <div class="col-md-2">
+                  <div class="d-flex gap-2">
+                    <button
+                      id="btnAplicarFiltro"
+                      class="btn btn-primary flex-fill"
+                    >
+                      <i class="fas fa-filter me-1"></i> FILTRAR
+                    </button>
+                    <button
+                      type="button"
+                      id="btnLimparFiltroLogs"
+                      class="btn btn-outline-secondary"
+                      title="Limpar filtro"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle mb-0" id="logsTable">
+              <thead class="table-primary">
+                <tr>
+                  <th>Usuário</th>
+                  <th>Ação</th>
+                  <th>Detalhes</th>
+                  <th>Data/Hora</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <nav
+            id="paginationLogsContainer"
+            aria-label="Navegação de páginas"
+            class="mt-3"
+          ></nav>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalCriarUsuario"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow border-primary">
+          <form id="createUserForm">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">
+                <i class="fas fa-user-plus me-2"></i>Cadastrar Usuário
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">NOME</label>
+                  <input
+                    type="text"
+                    name="nome"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">MATRÍCULA</label>
+                  <input
+                    type="text"
+                    name="matricula"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold">E-MAIL</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-bold">SENHA</label>
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      id="inputSenhaCriar"
+                      name="senha"
+                      class="form-control"
+                      required
+                    />
+                    <button
+                      class="btn btn-outline-secondary toggle-password-create"
+                      type="button"
+                      tabindex="-1"
+                      title="Mostrar/Ocultar Senha"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">SECRETARIA</label>
+                  <select
+                    name="secretaria_id"
+                    id="selectSecretaria"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Selecione...</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">PERFIL</label>
+                  <select
+                    name="perfil"
+                    id="selectPerfil"
+                    class="form-select"
+                    required
+                    onchange="toggleNivelAprovacao(this.value)"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="padrao">Usuário</option>
+                    <option value="ativador">Ativador</option>
+                    <option value="admin">Administrador</option>
+                    <option value="aprovador">Aprovador</option>
+                  </select>
+                </div>
+                <div
+                  class="col-12"
+                  id="campoNivelAprovacao"
+                  style="display: none"
+                >
+                  <label class="form-label small fw-bold text-danger"
+                    >NÍVEL DE APROVAÇÃO</label
+                  >
+                  <select
+                    name="nivel_aprovacao"
+                    id="selectNivelAprovacao"
+                    class="form-select"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="vice_prefeito">Vice-Prefeito</option>
+                    <option value="prefeito">Prefeito</option>
+                    <option value="planejamento">Planejamento</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-light">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                CANCELAR
+              </button>
+              <button type="submit" class="btn btn-primary">
+                SALVAR USUÁRIO
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalEditarUsuario"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow border-primary">
+          <form id="editUserForm">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">
+                <i class="fas fa-user-edit me-2"></i>Editar Usuário
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="editUserId" />
+              <div class="row g-3">
+                <div class="col-md-12">
+                  <label class="form-label small fw-bold">NOME COMPLETO</label>
+                  <input
+                    type="text"
+                    id="editNome"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">MATRÍCULA</label>
+                  <input
+                    type="text"
+                    id="editMatricula"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">E-MAIL</label>
+                  <input
+                    type="email"
+                    id="editEmail"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">SECRETARIA</label>
+                  <select
+                    id="editSecretariaId"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">PERFIL</label>
+                  <select
+                    id="editPerfil"
+                    class="form-select"
+                    required
+                    onchange="toggleNivelAprovacaoEdicao(this.value)"
+                  >
+                    <option value="padrao">Usuário</option>
+                    <option value="ativador">Ativador</option>
+                    <option value="admin">Administrador</option>
+                    <option value="aprovador">Aprovador</option>
+                  </select>
+                </div>
+                <div
+                  class="col-12"
+                  id="campoNivelAprovacaoEdicao"
+                  style="display: none"
+                >
+                  <label class="form-label small fw-bold text-danger"
+                    >NÍVEL DE APROVAÇÃO</label
+                  >
+                  <select id="editNivelAprovacao" class="form-select">
+                    <option value="">Selecione...</option>
+                    <option value="vice_prefeito">Vice-Prefeito</option>
+                    <option value="prefeito">Prefeito</option>
+                    <option value="planejamento">Planejamento</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-light">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                CANCELAR
+              </button>
+              <button type="submit" class="btn btn-primary">
+                SALVAR ALTERAÇÕES
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalAdminChangePassword"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary shadow">
+          <form id="adminChangePasswordForm">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">
+                <i class="fas fa-key me-2"></i>Alterar Senha do Usuário
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Alterando senha para:
+                <strong
+                  id="adminChangePasswordUserName"
+                  class="text-primary"
+                ></strong>
+              </p>
+              <input type="hidden" id="adminChangePasswordUserId" />
+              <div class="mb-3">
+                <label class="form-label fw-bold small"
+                  >NOVA SENHA (MÍN. 6 CARACTERES)</label
+                >
+                <div class="input-group">
+                  <input
+                    type="password"
+                    id="adminNewPassword"
+                    class="form-control"
+                    required
+                    minlength="6"
+                  />
+                  <button
+                    class="btn btn-outline-secondary toggle-password-admin"
+                    type="button"
+                    tabindex="-1"
+                    title="Mostrar/Ocultar Senha"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-light">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                CANCELAR
+              </button>
+              <button type="submit" class="btn btn-primary">
+                DEFINIR NOVA SENHA
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/logs_atividades.js"></script>
+    <script src="js/usuarios.js"></script>
+  </body>
+</html>

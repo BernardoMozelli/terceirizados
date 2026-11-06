@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Configurações - PMSL Terceiros</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link id="themeStylesheet" href="css/theme.css" rel="stylesheet" />
+  <link href="css/config.css" rel="stylesheet" />
+  <link href="css/internal-pages.css" rel="stylesheet" />
+    <link href="css/pmsl-moderno.css" rel="stylesheet" />
+  </head>
+
+<body>
+  <div id="navbar-placeholder"></div>
+  <div class="container my-4">
+    <h2>Configurações do Sistema</h2>
+    <p class="text-muted">Ajuste os parâmetros e permissões do sistema. Apenas administradores podem acessar esta
+      página.</p>
+
+    <form id="configForm">
+      <!-- Parâmetros Gerais -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Parâmetros Gerais</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="dias_alerta_status" class="form-label">Dias para alerta de status</label>
+              <input type="number" class="form-control" id="dias_alerta_status" name="dias_alerta_status">
+              <div class="form-text">Após este período, o usuário recebe um alerta para salvar os status.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="dias_desativacao_automatica" class="form-label">Dias para desativação automática</label>
+              <input type="number" class="form-control" id="dias_desativacao_automatica"
+                name="dias_desativacao_automatica">
+              <div class="form-text">Após este período, os funcionários da secretaria são desativados.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Permissões de Perfil -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Permissões de Perfil</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 col-lg-3">
+              <div class="list-group" id="perfil-tabs" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="perfil-padrao-tab" data-bs-toggle="list"
+                  href="#perfil-padrao-content" role="tab" aria-controls="perfil-padrao-content">Perfil Padrão</a>
+                <a class="list-group-item list-group-item-action" id="perfil-admin-tab" data-bs-toggle="list"
+                  href="#perfil-admin-content" role="tab" aria-controls="perfil-admin-content">Perfil Admin</a>
+              </div>
+            </div>
+            <div class="col-md-8 col-lg-9">
+              <div class="tab-content" id="perfil-tabs-content">
+                <div class="tab-pane fade show active" id="perfil-padrao-content" role="tabpanel"
+                  aria-labelledby="perfil-padrao-tab">
+                  <!-- Checkboxes para perfil padrão gerados via JS -->
+                </div>
+                <div class="tab-pane fade" id="perfil-admin-content" role="tabpanel" aria-labelledby="perfil-admin-tab">
+                  <!-- Checkboxes para perfil admin gerados via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg">Salvar Todas as Configurações</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/configuracoes.js"></script>
+</body>
+
+</html>

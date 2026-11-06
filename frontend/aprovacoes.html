@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aprovações - PMSL Terceirizados</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link href="css/internal-pages.css" rel="stylesheet" />
+    <link href="themes/tema-escuro.css" rel="stylesheet" />
+      <link href="css/pmsl-moderno.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container my-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2><i class="fas fa-check-circle me-2 icon-blue"></i> Aprovações</h2>
+          <p class="text-muted mb-0">
+            Gerenciar e centralizar a análise e validação de novos candidatos,
+            oferecendo controle e agilidade no processo de contratação.
+          </p>
+        </div>
+        <a
+          href="contratacoes.html"
+          target="_blank"
+          class="btn btn-primary shadow-sm"
+          data-permission="criar_candidato"
+        >
+          <i class="fas fa-plus me-2"></i> Novo Candidato
+        </a>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div
+            class="card text-center shadow-sm border-0 border-start border-4 border-warning"
+          >
+            <div class="card-body">
+              <h3 class="text-warning mb-0" id="stat-pendentes">0</h3>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">
+                Pendentes
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card text-center shadow-sm border-0 border-start border-4 border-info"
+          >
+            <div class="card-body">
+              <h3 class="text-info mb-0" id="stat-aprovados">0</h3>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">
+                Aprovados
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card text-center shadow-sm border-0 border-start border-4 border-danger"
+          >
+            <div class="card-body">
+              <h3 class="text-danger mb-0" id="stat-recusados">0</h3>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">
+                Recusados
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card text-center shadow-sm border-0 border-start border-4 border-success"
+          >
+            <div class="card-body">
+              <h3 class="text-success mb-0" id="stat-contratados">0</h3>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">
+                Contratados
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body rounded">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-2">
+              <label class="form-label text-muted small fw-bold">Status</label>
+              <select id="filtro-status" class="form-select shadow-sm">
+                <option value="">Todos</option>
+                <option value="pendente">Pendente</option>
+                <option value="recusado">Recusado</option>
+                <option value="contratado">Contratado</option>
+                <option value="desligado">Desligado</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label text-muted small fw-bold">Empresa</label>
+              <select id="filtro-empresa" class="form-select shadow-sm">
+                <option value="">Todas</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label text-muted small fw-bold"
+                >Secretaria</label
+              >
+              <select id="filtro-secretaria" class="form-select shadow-sm">
+                <option value="">Todas</option>
+              </select>
+            </div>
+            <div class="col-md-2" data-indicacao>
+              <label class="form-label text-muted small fw-bold"
+                >Indicação</label
+              >
+              <input
+                type="text"
+                id="filtro-indicacao"
+                class="form-control shadow-sm"
+                placeholder="Nome de quem indicou..."
+              />
+            </div>
+            <div class="col-md-2">
+              <label class="form-label text-muted small fw-bold"
+                >Procurar</label
+              >
+              <input
+                type="text"
+                id="filtro-busca"
+                class="form-control shadow-sm"
+                placeholder="Nome, CPF..."
+              />
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+              <button
+                class="btn btn-primary w-100 shadow-sm"
+                onclick="buscarCandidatos()"
+              >
+                <i class="fas fa-search"></i>
+              </button>
+              <button
+                class="btn btn-outline-secondary w-100 shadow-sm"
+                onclick="limparFiltros()"
+              >
+                <i class="fas fa-eraser"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body table-responsive p-3">
+          <div id="loading" class="text-center p-5" style="display: none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">A carregar candidatos...</p>
+          </div>
+          <div
+            id="vazio"
+            class="text-center p-5 text-muted"
+            style="display: none"
+          >
+            <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
+            <p>Nenhum candidato encontrado com os filtros atuais.</p>
+          </div>
+          <table
+            class="table table-hover align-middle mb-0"
+            id="tabela-candidatos"
+            style="display: none"
+          >
+            <thead>
+              <tr>
+                <th class="border-0">Foto</th>
+                <th class="border-0">Nome</th>
+                <th class="border-0">CPF</th>
+                <th class="border-0">Cargo</th>
+                <th class="border-0">Empresa</th>
+                <th class="border-0">Secretaria</th>
+                <th class="border-0" data-indicacao>Indicação</th>
+                <th class="border-0">Status</th>
+                <th class="border-0 text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-candidatos" class="border-top-0"></tbody>
+          </table>
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4">
+            <div id="tableInfo" class="text-muted small"></div>
+            <nav id="paginacao" class="d-flex justify-content-center mt-4"></nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalVisualizar" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+          <div
+            class="modal-header border-0 d-flex justify-content-between align-items-center"
+          >
+            <div class="d-flex align-items-center gap-3">
+              <h5 class="modal-title mb-0">
+                <i class="fas fa-id-badge me-2 text-primary"></i>Ficha do
+                Candidato
+              </h5>
+              <small
+                class="text-muted"
+                id="contadorModal"
+                style="font-size: 0.85rem"
+                >1 de 1</small
+              >
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row">
+              <div class="col-md-8">
+                <h4 id="modal-nome" class="mb-3 text-primary fw-bold"></h4>
+                <div class="mb-4 text-muted">
+                  <p class="mb-1">
+                    <i class="fas fa-envelope me-2" style="width: 20px"></i>
+                    <span id="modal-email"></span>
+                  </p>
+                  <p class="mb-1">
+                    <i class="fas fa-id-card me-2" style="width: 20px"></i>
+                    <span id="modal-cpf"></span>
+                  </p>
+                  <p class="mb-1">
+                    <i class="fas fa-briefcase me-2" style="width: 20px"></i>
+                    <span id="modal-cargo"></span>
+                  </p>
+                  <p class="mb-1">
+                    <i class="fas fa-sitemap me-2" style="width: 20px"></i>
+                    <span id="modal-setor"></span>
+                  </p>
+                  <p class="mb-1">
+                    <i class="fas fa-calendar-alt me-2" style="width: 20px"></i>
+                    <span id="modal-data-inicio"></span>
+                  </p>
+                  <p class="mb-0">
+                    <i class="fas fa-building me-2" style="width: 20px"></i>
+                    <span id="modal-secretaria"></span>
+                  </p>
+                  <p class="mb-0" data-indicacao>
+                    <i class="fas fa-handshake me-2" style="width: 20px"></i>
+                    <span id="modal-indicacao"></span>
+                  </p>
+                </div>
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Histórico</h6>
+                <div class="mb-4 p-3 rounded border bg-light">
+                  <p class="mb-1">
+                    <i
+                      class="fas fa-user me-2"
+                      style="width: 20px; color: #0d6efd"
+                    ></i>
+                    <strong>Cadastrado por:</strong>
+                    <span id="modal-usuario-criador">-</span>
+                  </p>
+                  <p class="mb-1">
+                    <i
+                      class="fas fa-building me-2"
+                      style="width: 20px; color: #0d6efd"
+                    ></i>
+                    <strong>Secretaria:</strong>
+                    <span id="modal-secretaria-criador">-</span>
+                  </p>
+                  <p class="mb-0">
+                    <i
+                      class="fas fa-calendar me-2"
+                      style="width: 20px; color: #0d6efd"
+                    ></i>
+                    <strong>Data/Hora:</strong>
+                    <span id="modal-data-criacao">-</span>
+                  </p>
+                </div>
+                <h6 class="fw-bold border-bottom pb-2 mb-3">
+                  Histórico de Aprovações
+                </h6>
+                <div id="modal-aprovacoes" class="p-3 rounded border"></div>
+              </div>
+              <div class="col-md-4 text-center">
+                <img
+                  id="modal-foto"
+                  src=""
+                  class="img-fluid rounded-circle shadow"
+                  style="
+                    width: 250px;
+                    height: 250px;
+                    object-fit: cover;
+                    display: none;
+                    margin: 0 auto;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 d-flex justify-content-between">
+            <div class="d-flex gap-2">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                id="btnPrevCandidato"
+                title="Candidato anterior"
+              >
+                <i class="fas fa-chevron-left"></i> Anterior
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                id="btnNextCandidato"
+                title="Próximo candidato"
+              >
+                Próximo <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-success px-4"
+                id="btn-aprovar"
+                style="display: none"
+                onclick="aprovarCandidato()"
+              >
+                <i class="fas fa-check me-2"></i>Aprovar
+              </button>
+              <button
+                class="btn btn-danger px-4"
+                id="btn-recusar"
+                style="display: none"
+                onclick="recusarCandidato()"
+              >
+                <i class="fas fa-times me-2"></i>Recusar
+              </button>
+              <button
+                class="btn btn-warning px-4"
+                id="btn-reiniciar-fluxo"
+                style="display: none"
+                onclick="reiniciarFluxoCandidato()"
+              >
+                <i class="fas fa-redo me-2"></i>Reiniciar Fluxo
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary px-4"
+                data-bs-dismiss="modal"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalVisualizarFoto" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">
+              <i class="fas fa-image me-2 text-primary"></i>Visualizar Foto
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center p-4">
+            <img
+              id="imgVisualizarFotoCandidato"
+              src=""
+              class="img-fluid rounded shadow"
+              style="max-height: 600px; max-width: 100%"
+              alt="Foto Ampliada"
+            />
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-secondary px-4"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalCriar" tabindex="-1">
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-cadastro-gigante"
+      >
+        <div class="modal-content shadow-lg">
+          <form id="form-criar-candidato" onsubmit="criarCandidato(event)">
+            <div
+              class="modal-header bg-primary text-white border-0 p-4"
+              style="border-radius: 12px 12px 0 0"
+            >
+              <h4 class="modal-title m-0 fw-bold">Cadastrar Novo Candidato</h4>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div class="modal-body p-4 p-md-5">
+              <div class="row">
+                <div
+                  class="col-12 foto-coluna-esquerda text-center d-flex flex-column align-items-center"
+                >
+                  <h5
+                    class="text-primary mb-4 border-bottom pb-2 fw-bold w-100 text-start"
+                  >
+                    <i class="fas fa-camera me-2"></i> Foto
+                  </h5>
+
+                  <div
+                    class="mb-4 shadow-sm"
+                    style="
+                      width: 120px;
+                      height: 120px;
+                      border: 3px dashed #6c757d;
+                      border-radius: 50%;
+                      overflow: hidden;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      position: relative;
+                      background: rgba(0, 0, 0, 0.05);
+                    "
+                  >
+                    <img
+                      id="preview-foto"
+                      src=""
+                      style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: none;
+                        position: absolute;
+                        z-index: 2;
+                      "
+                    />
+                    <i
+                      class="fas fa-user text-muted"
+                      id="icone-foto-placeholder"
+                      style="font-size: 3.5rem; z-index: 1"
+                    ></i>
+                  </div>
+
+                  <label
+                    for="criar-foto"
+                    class="btn btn-outline-primary fw-bold shadow-sm"
+                    style="width: 220px"
+                  >
+                    <i class="fas fa-upload me-2"></i>Selecionar Imagem
+                  </label>
+                  <input
+                    type="file"
+                    id="criar-foto"
+                    class="d-none"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onchange="previewImagem(this)"
+                  />
+                  <small class="text-muted mt-2 d-block"
+                    >Formatos: JPG/PNG. Máx: 2MB.</small
+                  >
+                </div>
+
+                <div class="col-12">
+                  <h5 class="text-primary mb-4 border-bottom pb-2 fw-bold">
+                    <i class="fas fa-id-card me-2"></i> Dados Pessoais
+                  </h5>
+
+                  <div class="row g-3 mb-4">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Nome Completo <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="criar-nome"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-7">
+                      <label class="form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="criar-email"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-5">
+                      <label class="form-label"
+                        >CPF <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="criar-cpf"
+                        placeholder="000.000.000-00"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label">Telefone</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="criar-telefone"
+                        placeholder="(00) 00000-0000"
+                      />
+                    </div>
+                    <div class="col-12" data-indicacao>
+                      <label class="form-label"
+                        >Indicação <span class="text-danger">*</span></label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="criar-observacoes"
+                        style="height: auto !important; min-height: 100px"
+                        placeholder="Quem indicou esse candidato."
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <h5 class="text-primary mb-4 border-bottom pb-2 fw-bold mt-4">
+                    <i class="fas fa-briefcase me-2"></i> Dados Profissionais
+                  </h5>
+
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Cargo <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="criar-cargo"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label"
+                        >Empresa <span class="text-danger">*</span></label
+                      >
+                      <select
+                        class="form-select"
+                        id="criar-empresa"
+                        required
+                      ></select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label"
+                        >Secretaria <span class="text-danger">*</span></label
+                      >
+                      <select
+                        class="form-select"
+                        id="criar-secretaria"
+                        required
+                        data-ativador-restrito="true"
+                      ></select>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Data Início Prevista
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="criar-data-inicio"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="modal-footer border-0 p-4"
+              style="
+                border-radius: 0 0 12px 12px;
+                background: rgba(0, 0, 0, 0.03);
+              "
+            >
+              <button
+                type="button"
+                class="btn btn-secondary px-4 fw-bold shadow-sm"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary px-4 fw-bold shadow-sm"
+                id="btn-salvar-candidato"
+              >
+                <i class="fas fa-save me-2"></i>Salvar Candidato
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-cadastro-gigante"
+      >
+        <div class="modal-content shadow-lg">
+          <form
+            id="form-editar-candidato"
+            onsubmit="salvarEdicaoCandidato(event)"
+          >
+            <input type="hidden" id="editar-id" />
+
+            <div
+              class="modal-header bg-primary text-white border-0 p-4"
+              style="border-radius: 12px 12px 0 0"
+            >
+              <h4 class="modal-title m-0 fw-bold">Editar Candidato</h4>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div class="modal-body p-4 p-md-5">
+              <div class="row">
+                <div
+                  class="col-12 foto-coluna-esquerda text-center d-flex flex-column align-items-center"
+                >
+                  <h5
+                    class="text-primary mb-4 border-bottom pb-2 fw-bold w-100 text-start"
+                  >
+                    <i class="fas fa-camera me-2"></i> Foto
+                  </h5>
+
+                  <div
+                    class="mb-4 shadow-sm"
+                    style="
+                      width: 120px;
+                      height: 120px;
+                      border: 3px dashed #6c757d;
+                      border-radius: 50%;
+                      overflow: hidden;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      position: relative;
+                      background: rgba(0, 0, 0, 0.05);
+                    "
+                  >
+                    <img
+                      id="preview-foto-editar"
+                      src=""
+                      style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: none;
+                        position: absolute;
+                        z-index: 2;
+                      "
+                    />
+                    <i
+                      class="fas fa-user text-muted"
+                      id="icone-foto-placeholder-editar"
+                      style="font-size: 3.5rem; z-index: 1"
+                    ></i>
+                  </div>
+
+                  <label
+                    for="editar-foto"
+                    class="btn btn-outline-primary fw-bold shadow-sm"
+                    style="width: 220px"
+                  >
+                    <i class="fas fa-upload me-2"></i>Alterar Imagem
+                  </label>
+                  <input
+                    type="file"
+                    id="editar-foto"
+                    class="d-none"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onchange="previewImagemEditar(this)"
+                  />
+                </div>
+
+                <div class="col-12">
+                  <h5 class="text-primary mb-4 border-bottom pb-2 fw-bold">
+                    <i class="fas fa-id-card me-2"></i> Dados Pessoais
+                  </h5>
+
+                  <div class="row g-3 mb-4">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Nome Completo <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="editar-nome"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-7">
+                      <label class="form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="editar-email"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-5">
+                      <label class="form-label"
+                        >CPF <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="editar-cpf"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label">Telefone</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="editar-telefone"
+                      />
+                    </div>
+                  </div>
+
+                  <h5 class="text-primary mb-4 border-bottom pb-2 fw-bold mt-4">
+                    <i class="fas fa-briefcase me-2"></i> Dados Profissionais
+                  </h5>
+
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Cargo <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="editar-cargo"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Setor <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="editar-setor"
+                        required
+                      />
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label"
+                        >Empresa <span class="text-danger">*</span></label
+                      >
+                      <select
+                        class="form-select"
+                        id="editar-empresa"
+                        required
+                      ></select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label"
+                        >Secretaria <span class="text-danger">*</span></label
+                      >
+                      <select
+                        class="form-select"
+                        id="editar-secretaria"
+                        required
+                      ></select>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label"
+                        >Data Início Prevista
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="editar-data-inicio"
+                        required
+                      />
+                    </div>
+                    <div class="col-12" data-indicacao>
+                      <label class="form-label"
+                        >Indicação <span class="text-danger">*</span></label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="editar-observacoes"
+                        style="height: auto !important; min-height: 100px"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="modal-footer border-0 p-4"
+              style="
+                border-radius: 0 0 12px 12px;
+                background: rgba(0, 0, 0, 0.03);
+              "
+            >
+              <button
+                type="button"
+                class="btn btn-secondary px-4 fw-bold shadow-sm"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary px-4 fw-bold shadow-sm"
+                id="btn-salvar-edicao"
+              >
+                <i class="fas fa-save me-2"></i>Atualizar Candidato
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/aprovacoes.js"></script>
+  </body>
+</html>
